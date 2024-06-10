@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# ASCII Art "MUSIC FEST ON" e firma "by ceck90"
+echo "  __  __ _    _  _____ _____ _____   ______ ______  _____ _______    ____  _   _ "
+echo " |  \/  | |  | |/ ____|_   _/ ____| |  ____|  ____|/ ____|__   __|  / __ \| \ | |"
+echo " | \  / | |  | | (___   | || |      | |__  | |__  | (___    | |    | |  | |  \| |"
+echo " | |\/| | |  | |\___ \  | || |      |  __| |  __|  \___ \   | |    | |  | | .   |"
+echo " | |  | | |__| |____) |_| || |____  | |    | |____ ____) |  | |    | |__| | |\  |"
+echo " |_|  |_|\____/|_____/|_____\_____| |_|    |______|_____/   |_|     \____/|_| \_|"
+echo "                                                                                 "
+echo "                                                                 by ceck90       "
+echo ""
+
 # Funzione per installare Chromium se non è già installato
 install_chromium() {
     if ! command -v chromium-browser &> /dev/null
@@ -31,6 +42,16 @@ create_files() {
     JSON_PATH="/home/pi/config.json"
     SERVICE_PATH="/etc/systemd/system/kiosk.service"
 
+    # URL di default
+    DEFAULT_URL="http://192.168.1.21"
+
+    # Controlla se è stato passato un argomento per l'URL
+    if [ -n "$1" ]; then
+        URL="$1"
+    else
+        URL="$DEFAULT_URL"
+    fi
+
     # Contenuto del file start_kiosk.sh
     read -r -d '' SCRIPT_CONTENT << EOM
 #!/bin/bash
@@ -48,7 +69,7 @@ EOM
     # Contenuto del file config.json
     read -r -d '' JSON_CONTENT << EOM
 {
-    "url": "http://www.example.com"
+    "url": "$URL"
 }
 EOM
 
@@ -99,6 +120,10 @@ show_menu() {
     echo "6) Esci"
 }
 
+# URL di default
+DEFAULT_URL="http://192.168.1.21"
+
+# Inizio del menu
 while true; do
     show_menu
     read -p "Scelta: " choice
@@ -110,7 +135,8 @@ while true; do
             install_jq
             ;;
         3)
-            create_files
+            read -p "Inserisci l'URL (premi invio per usare il default $DEFAULT_URL): " custom_url
+            create_files "${custom_url:-$DEFAULT_URL}"
             ;;
         4)
             enable_and_start_service
@@ -118,7 +144,8 @@ while true; do
         5)
             install_chromium
             install_jq
-            create_files
+            read -p "Inserisci l'URL (premi invio per usare il default $DEFAULT_URL): " custom_url
+            create_files "${custom_url:-$DEFAULT_URL}"
             enable_and_start_service
             ;;
         6)
