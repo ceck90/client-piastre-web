@@ -166,7 +166,7 @@ read -r -d '' SERVICE_CONTENT << EOM
 Description=Music FestOn Piastre WEB Kiosk Mode
 
 [Service]
-ExecStartPre=pkill -9 chrome
+ExecStartPre=-pkill -9 chrome
 ExecStart=/bin/bash $SCRIPT_PATH
 ExecStop=pkill -9 chrome
 Restart=always
