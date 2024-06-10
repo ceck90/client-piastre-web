@@ -217,6 +217,7 @@ show_menu() {
 
 # Inizio del menu
 while true; do
+    sleep 2
     clear
     print_header
     show_menu
@@ -258,7 +259,6 @@ while true; do
             ;;
         *)
             echo "Scelta non valida. Riprova."
-            sleep 2
             ;;
     esac
 done

@@ -46,16 +46,20 @@ Lo script `install_kiosk.sh` esegue le seguenti operazioni:
 
 Lo script di installazione include un menu per guidare l'utente attraverso il processo di installazione. Le opzioni disponibili sono:
 
-1. Installa Chromium
-2. Installa jq
-3. Crea file di configurazione
-4. Abilita e avvia il servizio
-5. Esegui tutte le operazioni
-6. Esci
+1. Installa pacchetti necessari e tool di debug
+2. Crea file di configurazione
+3. Abilita e avvia il servizio
+4. Disattiva screensaver e poersave di Ubuntu
+5. Abilita accesso SSH remoto
+6.  
+7. 
+8. 
+9. Esegui tutte le operazioni
+10. Esci
 
 ## File di Configurazione
 
-### `config.json`
+### `piastre_cfg.json`
 
 Questo file contiene l'URL da caricare in modalità kiosk:
 
