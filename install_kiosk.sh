@@ -105,7 +105,8 @@ configure_ubuntu() {
     echo "Screen saver disabilitato."
 
     echo "Abilitazione dell'autologin..."
-    sudo sed -i '/^\[Seat:\*\]/a autologin-user='$USER'' /etc/lightdm/lightdm.conf
+    sudo sed -i '/^\[daemon]/a AutomaticLogin='$USER'' /etc/gdm3/custom.conf
+    sudo sed -i '/^\[daemon]/a AutomaticLoginEnable=true' /etc/gdm3/custom.conf 
     echo "Autologin abilitato per l'utente $USER."
 }
 
