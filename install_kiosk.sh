@@ -51,6 +51,15 @@ install_jq() {
 
 # Funzione per creare i file necessari
 create_files() {
+
+    if [ -d $DEFAULT_PATH ]; 
+    then
+        echo "Directory $DEFAULT_PATH exists."
+    else
+        mkdir -p $DEFAULT_PATH
+        echo "Directory $DEFAULT_PATH created successfully."
+    fi
+
     
     # Controlla se è stato passato un argomento per l'URL
     if [ -n "$1" ]; then
@@ -80,8 +89,8 @@ read -r -d '' JSON_CONTENT << EOM
 }
 EOM
 
-    # Contenuto del servizio systemd
-    read -r -d '' SERVICE_CONTENT << EOM
+# Contenuto del servizio systemd
+read -r -d '' SERVICE_CONTENT << EOM
 [Unit]
 Description=Music FestOn Piastre WEB Kiosk Mode
 
