@@ -1,19 +1,20 @@
 #!/bin/bash
 
-# ASCII Art "MUSIC FEST ON" e firma "by ceck90"
-echo "  __  __ _    _  _____ _____ _____   ______ ______  _____ _______    ____  _   _ "
-echo " |  \/  | |  | |/ ____|_   _/ ____| |  ____|  ____|/ ____|__   __|  / __ \| \ | |"
-echo " | \  / | |  | | (___   | || |      | |__  | |__  | (___    | |    | |  | |  \| |"
-echo " | |\/| | |  | |\___ \  | || |      |  __| |  __|  \___ \   | |    | |  | | .   |"
-echo " | |  | | |__| |____) |_| || |____  | |    | |____ ____) |  | |    | |__| | |\  |"
-echo " |_|  |_|\____/|_____/|_____\_____| |_|    |______|_____/   |_|     \____/|_| \_|"
-echo "                                                                                 "
-echo "                            MONITOR PER PIASTRE CUCINA                           "
-echo "                       INSTALLAZIONE ED AVVIO AUTOMATICO UI                      "
-echo "                                                                                 "
-echo "                                                                 by ceck90       "
-echo "                                                              CECCATO ROBERTO    "
-echo ""
+function print_header() {
+    echo "  __  __ _    _  _____ _____ _____   ______ ______  _____ _______    ____  _   _ "
+    echo " |  \/  | |  | |/ ____|_   _/ ____| |  ____|  ____|/ ____|__   __|  / __ \| \ | |"
+    echo " | \  / | |  | | (___   | || |      | |__  | |__  | (___    | |    | |  | |  \| |"
+    echo " | |\/| | |  | |\___ \  | || |      |  __| |  __|  \___ \   | |    | |  | | .   |"
+    echo " | |  | | |__| |____) |_| || |____  | |    | |____ ____) |  | |    | |__| | |\  |"
+    echo " |_|  |_|\____/|_____/|_____\_____| |_|    |______|_____/   |_|     \____/|_| \_|"
+    echo "                                                                                 "
+    echo "                            MONITOR PER PIASTRE CUCINA                           "
+    echo "                       INSTALLAZIONE ED AVVIO AUTOMATICO UI                      "
+    echo "                                                                                 "
+    echo "                                                                 by ceck90       "
+    echo "                                                              CECCATO ROBERTO    "
+    echo ""
+}
 
 # File name
 DEFAULT_PATH="/home/$USER/Scrivania/MusicFestOn"
@@ -214,6 +215,8 @@ show_menu() {
 
 # Inizio del menu
 while true; do
+    clear
+    print_header
     show_menu
     read -p "Scelta: " choice
     case $choice in
@@ -253,6 +256,7 @@ while true; do
             ;;
         *)
             echo "Scelta non valida. Riprova."
+            sleep 2
             ;;
     esac
 done
