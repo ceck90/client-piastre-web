@@ -32,6 +32,7 @@ DEFAULT_URL="http://192.168.1.21"
 
 install_dependencies() {
 # Funzione per installare Chromium se non è già installato
+    echo ""
     if ! command -v chromium-browser &> /dev/null
     then
         echo "Chromium non è installato. Installazione in corso..."
@@ -42,6 +43,7 @@ install_dependencies() {
     fi
 
 # Funzione per installare jq se non è già installato
+    echo ""
     if ! command -v jq &> /dev/null
     then
         echo "jq non è installato. Installazione in corso..."
@@ -52,7 +54,7 @@ install_dependencies() {
     fi
 
 # Funzione per installare git se non è già installato
-
+    echo ""
     if ! command -v git &> /dev/null
     then
         echo "Git non è installato. Installazione in corso..."
@@ -63,7 +65,7 @@ install_dependencies() {
     fi
 
 # Funzione per installare htop se non è già installato
-
+    echo ""
     if ! command -v htop &> /dev/null
     then
         echo "htop non è installato. Installazione in corso..."
@@ -74,6 +76,7 @@ install_dependencies() {
     fi
 
 # Funzione per installare net-tools se non è già installato
+    echo ""
     if ! dpkg -s net-tools &> /dev/null
     then
         echo "net-tools non è installato. Installazione in corso..."
@@ -86,6 +89,7 @@ install_dependencies() {
 
 # Funzione per disattivare la disattivazione automatica
 disable_ubuntu_suspend() {
+    echo ""
     echo "Rimozione del timeout dello schermo in corso..."
     gsettings set org.gnome.desktop.session idle-delay 0
     echo "Timeout dello schermo rimosso."
@@ -102,6 +106,7 @@ disable_ubuntu_suspend() {
 
 # Funzione per abilitare l'accesso root tramite SSH e a tutti gli IP
 configure_ssh() {
+    echo ""
     echo "Abilitazione dell'accesso root tramite SSH..."
     sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
     echo "Accesso root tramite SSH abilitato."
@@ -188,6 +193,7 @@ EOM
 
 # Funzione per abilitare e avviare il servizio
 enable_and_start_service() {
+    echo ""
     sudo systemctl enable $SERVICE_NAME
     sudo systemctl start $SERVICE_NAME
     echo "Servizio $SERVICE_NAME abilitato ed avviato."
@@ -195,6 +201,7 @@ enable_and_start_service() {
 
 # Funzione per mostrare il menu
 show_menu() {
+    echo ""
     echo "Seleziona un'opzione:"
     echo "1) Installa pacchetti necessari"
     echo "2) Crea file di configurazione"
