@@ -88,8 +88,8 @@ install_dependencies() {
     fi
 }
 
-# Funzione per disattivare la disattivazione automatica
-disable_ubuntu_suspend() {
+# Funzione per disattivare la disattivazione automatica, enable auto-login
+configure_ubuntu() {
     echo ""
     echo "Rimozione del timeout dello schermo in corso..."
     gsettings set org.gnome.desktop.session idle-delay 0
@@ -103,6 +103,10 @@ disable_ubuntu_suspend() {
     echo "Disabilitazione dello screen saver in corso..."
     gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
     echo "Screen saver disabilitato."
+
+    echo "Abilitazione dell'autologin..."
+    sudo sed -i '/^\[Seat:\*\]/a autologin-user='$USER'' /etc/lightdm/lightdm.conf
+    echo "Autologin abilitato per l'utente $USER."
 }
 
 # Funzione per abilitare l'accesso root tramite SSH e a tutti gli IP
@@ -234,7 +238,7 @@ while true; do
             enable_and_start_service
             ;;
         4)
-            disable_ubuntu_suspend
+            configure_ubuntu
             ;;
         5)
             configure_ssh
@@ -247,7 +251,7 @@ while true; do
             ;;
         9)
             install_dependencies
-            disable_ubuntu_suspend
+            configure_ubuntu
             configure_ssh
             read -p "Inserisci l'URL (premi invio per usare il default $DEFAULT_URL): " custom_url
             create_files "${custom_url:-$DEFAULT_URL}"
