@@ -204,12 +204,14 @@ enable_and_start_service() {
 show_menu() {
     echo ""
     echo "Seleziona un'opzione:"
+    echo ""
     echo "1) Installa pacchetti necessari"
     echo "2) Crea file di configurazione"
     echo "3) Abilita e avvia il servizio"
     echo "4) Disattiva screensaver e powersave di Ubuntu"
     echo "5) Abilita accesso SSH remoto"
     echo "9) Esegui tutte le operazioni"
+    echo ""
     echo "0) Esci"
 }
 
