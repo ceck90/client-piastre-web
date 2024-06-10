@@ -1,10 +1,13 @@
-# Raspberry Pi Kiosk Mode Setup
+# Music FestOn - Mellaredo di Pianiga
+#### by ceck90 
+https://github.com/ceck90
+### Raspberry Pi Kiosk Mode Setup per UI piastre cucina
 
 Questo repository contiene uno script per configurare un Raspberry Pi in modalità kiosk, utilizzando Chromium per visualizzare una pagina web specificata in un file JSON.
 
 ## Requisiti
 
-- Raspberry Pi con Ubuntu installato
+- Raspberry Pi 3/4 con Ubuntu 22 o superiori installato
 - Connessione a Internet
 
 ## Installazione
@@ -34,8 +37,10 @@ Lo script `install_kiosk.sh` esegue le seguenti operazioni:
 
 - Controlla e installa Chromium se non è già presente.
 - Controlla e installa `jq` se non è già presente.
-- Crea i file necessari (`start_kiosk.sh` e `config.json`) nella directory `/home/pi`.
+- Crea i file necessari (`start_piastre_web.sh` e `piastre_cfg.json`) nella directory `/home/user/Scrivania/MusicFestOn`.
 - Crea e abilita un servizio systemd per avviare Chromium in modalità kiosk all'avvio del sistema.
+
+### Attenzione, nel caso che l'utente sia diverso da 'user', verrà autmaticamente usato l'utente corrente nel sistema
 
 ## Menu di Installazione
 
@@ -58,3 +63,28 @@ Questo file contiene l'URL da caricare in modalità kiosk:
 {
     "url": "http://192.168.1.21"
 }
+```
+
+### Avvio manuale
+
+```
+/home/user/Scrivania/MusicFestOn/start_piastre_web.sh
+```
+
+### Debug del servizio
+
+```
+sudo systemctl status piastre_web.service
+```
+
+### Disattivazione avvio automatico del servizio
+
+```
+sudo systemctl disable piastre_web.service
+```
+
+### Avvio automatico del servizio
+
+```
+sudo systemctl enable piastre_web.service
+```

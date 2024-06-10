@@ -8,11 +8,15 @@ echo " | |\/| | |  | |\___ \  | || |      |  __| |  __|  \___ \   | |    | |  | 
 echo " | |  | | |__| |____) |_| || |____  | |    | |____ ____) |  | |    | |__| | |\  |"
 echo " |_|  |_|\____/|_____/|_____\_____| |_|    |______|_____/   |_|     \____/|_| \_|"
 echo "                                                                                 "
+echo "                            MONITOR PER PIASTRE CUCINA                           "
+echo "                       INSTALLAZIONE ED AVVIO AUTOMATICO UI                      "
+echo "                                                                                 "
 echo "                                                                 by ceck90       "
+echo "                                                              CECCATO ROBERTO    "
 echo ""
 
 # File name
-DEFAULT_PATH="/home/user/Scrivania/MusicFestOn"
+DEFAULT_PATH="/home/$USER/Scrivania/MusicFestOn"
 SCRIPT_NAME="start_piastre_web.sh"
 SERVICE_NAME="piastre_web.service"
 CFG_FILE_NAME="piastre_cfg.json"
@@ -97,7 +101,7 @@ Description=Music FestOn Piastre WEB Kiosk Mode
 [Service]
 ExecStart=/bin/bash $SCRIPT_PATH
 Restart=always
-User=pi
+User=$USER
 Environment=DISPLAY=:0
 
 [Install]
