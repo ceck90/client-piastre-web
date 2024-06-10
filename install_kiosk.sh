@@ -29,8 +29,9 @@ SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
 # URL di default
 DEFAULT_URL="http://192.168.1.21"
 
+
+install_dependencies() {
 # Funzione per installare Chromium se non è già installato
-install_chromium() {
     if ! command -v chromium-browser &> /dev/null
     then
         echo "Chromium non è installato. Installazione in corso..."
@@ -39,10 +40,8 @@ install_chromium() {
     else
         echo "Chromium è già installato."
     fi
-}
 
 # Funzione per installare jq se non è già installato
-install_jq() {
     if ! command -v jq &> /dev/null
     then
         echo "jq non è installato. Installazione in corso..."
@@ -51,6 +50,68 @@ install_jq() {
     else
         echo "jq è già installato."
     fi
+
+# Funzione per installare git se non è già installato
+
+    if ! command -v git &> /dev/null
+    then
+        echo "Git non è installato. Installazione in corso..."
+        sudo apt-get update
+        sudo apt-get install -y git
+    else
+        echo "Git è già installato."
+    fi
+
+# Funzione per installare htop se non è già installato
+
+    if ! command -v htop &> /dev/null
+    then
+        echo "htop non è installato. Installazione in corso..."
+        sudo apt-get update
+        sudo apt-get install -y htop
+    else
+        echo "htop è già installato."
+    fi
+
+# Funzione per installare net-tools se non è già installato
+    if ! dpkg -s net-tools &> /dev/null
+    then
+        echo "net-tools non è installato. Installazione in corso..."
+        sudo apt-get update
+        sudo apt-get install -y net-tools
+    else
+        echo "net-tools è già installato."
+    fi
+}
+
+# Funzione per disattivare la disattivazione automatica
+disable_ubuntu_suspend() {
+    echo "Rimozione del timeout dello schermo in corso..."
+    gsettings set org.gnome.desktop.session idle-delay 0
+    echo "Timeout dello schermo rimosso."
+
+    echo "Disattivazione della disattivazione automatica in corso..."
+    gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
+    gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 0
+    echo "Disattivazione automatica disabilitata."
+
+    echo "Disabilitazione dello screen saver in corso..."
+    gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
+    echo "Screen saver disabilitato."
+}
+
+# Funzione per abilitare l'accesso root tramite SSH e a tutti gli IP
+configure_ssh() {
+    echo "Abilitazione dell'accesso root tramite SSH..."
+    sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+    echo "Accesso root tramite SSH abilitato."
+
+    echo "Consentire l'accesso SSH da qualsiasi IP..."
+    sudo sed -i 's/#ListenAddress 0.0.0.0/ListenAddress 0.0.0.0/' /etc/ssh/sshd_config
+    sudo sed -i 's/#ListenAddress ::/ListenAddress ::/' /etc/ssh/sshd_config
+    echo "Accesso SSH da qualsiasi IP consentito."
+
+    sudo systemctl restart sshd
 }
 
 # Funzione per creare i file necessari
@@ -135,12 +196,13 @@ enable_and_start_service() {
 # Funzione per mostrare il menu
 show_menu() {
     echo "Seleziona un'opzione:"
-    echo "1) Installa Chromium"
-    echo "2) Installa jq"
-    echo "3) Crea file di configurazione"
-    echo "4) Abilita e avvia il servizio"
-    echo "5) Esegui tutte le operazioni"
-    echo "6) Esci"
+    echo "1) Installa pacchetti necessari"
+    echo "2) Crea file di configurazione"
+    echo "3) Abilita e avvia il servizio"
+    echo "4) Disattiva screensaver e powersave di Ubuntu"
+    echo "5) Abilita accesso SSH remoto"
+    echo "9) Esegui tutte le operazioni"
+    echo "0) Esci"
 }
 
 # Inizio del menu
@@ -149,26 +211,36 @@ while true; do
     read -p "Scelta: " choice
     case $choice in
         1)
-            install_chromium
+            install_dependencies
             ;;
         2)
-            install_jq
+            read -p "Inserisci l'URL (premi invio per usare il default $DEFAULT_URL): " custom_url
+            create_files "${custom_url:-$DEFAULT_URL}"
             ;;
         3)
-            read -p "Inserisci l'URL (premi invio per usare il default $DEFAULT_URL): " custom_url
-            create_files "${custom_url:-$DEFAULT_URL}"
+            enable_and_start_service
             ;;
         4)
-            enable_and_start_service
+            disable_ubuntu_suspend
             ;;
         5)
-            install_chromium
-            install_jq
+            configure_ssh
+            ;;            
+        6)
+            ;;
+        7)
+            ;;
+        8)
+            ;;
+        9)
+            install_dependencies
+            disable_ubuntu_suspend
+            configure_ssh
             read -p "Inserisci l'URL (premi invio per usare il default $DEFAULT_URL): " custom_url
             create_files "${custom_url:-$DEFAULT_URL}"
             enable_and_start_service
             ;;
-        6)
+        0)
             echo "Uscita."
             exit 0
             ;;
