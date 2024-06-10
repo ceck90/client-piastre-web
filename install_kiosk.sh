@@ -99,7 +99,9 @@ read -r -d '' SERVICE_CONTENT << EOM
 Description=Music FestOn Piastre WEB Kiosk Mode
 
 [Service]
+ExecStartPre=pkill -9 chrome
 ExecStart=/bin/bash $SCRIPT_PATH
+ExecStop=pkill -9 chrome
 Restart=always
 User=$USER
 Environment=DISPLAY=:0
@@ -108,25 +110,26 @@ Environment=DISPLAY=:0
 WantedBy=graphical.target
 EOM
 
-    # Creare il file start_kiosk.sh
+    # Creare il file script
     echo "$SCRIPT_CONTENT" > $SCRIPT_PATH
     chmod +x $SCRIPT_PATH
-    echo "Script start_kiosk.sh creato in $SCRIPT_PATH."
+    echo "Script $SCRIPT_NAME creato in $SCRIPT_PATH."
 
-    # Creare il file config.json
+    # Creare il file config
     echo "$JSON_CONTENT" > $JSON_PATH
-    echo "File config.json creato in $JSON_PATH."
+    echo "File $CFG_FILE_NAME creato in $JSON_PATH."
 
     # Creare il servizio systemd
     echo "$SERVICE_CONTENT" | sudo tee $SERVICE_PATH > /dev/null
-    echo "Servizio systemd creato in $SERVICE_PATH."
+    sudo systemctl daemon-reload > /dev/null
+    echo "Servizio $SERVICE_NAME creato in $SERVICE_PATH."
 }
 
 # Funzione per abilitare e avviare il servizio
 enable_and_start_service() {
     sudo systemctl enable $SERVICE_NAME
     sudo systemctl start $SERVICE_NAME
-    echo "Servizio $SERVICE_NAME abilitato e avviato."
+    echo "Servizio $SERVICE_NAME abilitato ed avviato."
 }
 
 # Funzione per mostrare il menu
