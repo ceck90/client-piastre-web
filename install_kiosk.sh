@@ -11,6 +11,20 @@ echo "                                                                          
 echo "                                                                 by ceck90       "
 echo ""
 
+# File name
+DEFAULT_PATH="/home/user/Scrivania/MusicFestOn"
+SCRIPT_NAME="start_piastre_web.sh"
+SERVICE_NAME="piastre_web.service"
+CFG_FILE_NAME="piastre_cfg.json"
+
+# Percorsi dei file
+SCRIPT_PATH="$DEFAULT_PATH/$SCRIPT_NAME"
+JSON_PATH="$DEFAULT_PATH/$CFG_FILE_NAME"
+SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
+
+# URL di default
+DEFAULT_URL="http://192.168.1.21"
+
 # Funzione per installare Chromium se non è già installato
 install_chromium() {
     if ! command -v chromium-browser &> /dev/null
@@ -37,14 +51,7 @@ install_jq() {
 
 # Funzione per creare i file necessari
 create_files() {
-    # Percorsi dei file
-    SCRIPT_PATH="/home/pi/start_kiosk.sh"
-    JSON_PATH="/home/pi/config.json"
-    SERVICE_PATH="/etc/systemd/system/kiosk.service"
-
-    # URL di default
-    DEFAULT_URL="http://192.168.1.21"
-
+    
     # Controlla se è stato passato un argomento per l'URL
     if [ -n "$1" ]; then
         URL="$1"
@@ -57,7 +64,7 @@ create_files() {
 #!/bin/bash
 
 # Percorso del file JSON
-json_file_path="/home/pi/config.json"
+json_file_path="$JSON_PATH"
 
 # Legge l'URL dal file JSON usando jq
 url=\$(jq -r '.url' "\$json_file_path")
@@ -66,8 +73,8 @@ url=\$(jq -r '.url' "\$json_file_path")
 chromium-browser --kiosk "\$url"
 EOM
 
-    # Contenuto del file config.json
-    read -r -d '' JSON_CONTENT << EOM
+# Contenuto del file config.json
+read -r -d '' JSON_CONTENT << EOM
 {
     "url": "$URL"
 }
@@ -76,10 +83,10 @@ EOM
     # Contenuto del servizio systemd
     read -r -d '' SERVICE_CONTENT << EOM
 [Unit]
-Description=Kiosk Mode
+Description=Music FestOn Piastre WEB Kiosk Mode
 
 [Service]
-ExecStart=/bin/bash /home/pi/start_kiosk.sh
+ExecStart=/bin/bash $SCRIPT_PATH
 Restart=always
 User=pi
 Environment=DISPLAY=:0
@@ -104,9 +111,9 @@ EOM
 
 # Funzione per abilitare e avviare il servizio
 enable_and_start_service() {
-    sudo systemctl enable kiosk.service
-    sudo systemctl start kiosk.service
-    echo "Servizio kiosk.service abilitato e avviato."
+    sudo systemctl enable $SERVICE_NAME
+    sudo systemctl start $SERVICE_NAME
+    echo "Servizio $SERVICE_NAME abilitato e avviato."
 }
 
 # Funzione per mostrare il menu
@@ -119,9 +126,6 @@ show_menu() {
     echo "5) Esegui tutte le operazioni"
     echo "6) Esci"
 }
-
-# URL di default
-DEFAULT_URL="http://192.168.1.21"
 
 # Inizio del menu
 while true; do
