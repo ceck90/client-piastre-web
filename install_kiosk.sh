@@ -17,7 +17,7 @@ function print_header() {
 }
 
 # File name
-DEFAULT_PATH="/home/$USER/Scrivania/MusicFestOn"
+DEFAULT_PATH="/home/$USER/MusicFestOn"
 SCRIPT_NAME="start_piastre_web.sh"
 SERVICE_NAME="piastre_web.service"
 CFG_FILE_NAME="piastre_cfg.json"
