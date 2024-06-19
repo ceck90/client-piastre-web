@@ -155,7 +155,7 @@ json_file_path="$JSON_PATH"
 url=\$(jq -r '.url' "\$json_file_path")
 
 # Comando per avviare Chromium in modalità kiosk
-chromium-browser --kiosk "\$url"
+chromium-browser --kiosk --disk-cache-dir=/dev/null --disk-cache-size=1 "\$url"
 EOM
 
 # Contenuto del file config.json
